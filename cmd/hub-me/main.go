@@ -18,6 +18,7 @@ func entry() {
 	systray.SetTooltip("GitHub Integration")
 	systray.SetIcon(icons.Data)
 	mNewRepo := systray.AddMenuItem("New Repo", "Open browser to create new repo")
+	systray.AddSeparator()
 	mQuit := systray.AddMenuItem("Quit", "Exit the application")
 	mNewRepo.Show()
 	mQuit.Show()
