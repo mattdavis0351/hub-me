@@ -1,7 +1,10 @@
 package main
 
 import (
+	"fmt"
+
 	"github.com/getlantern/systray"
+	"github.com/mattdavis0351/hub-me/icons"
 	"github.com/mattdavis0351/hub-me/items"
 	"github.com/mattdavis0351/hub-me/repository"
 )
@@ -11,8 +14,9 @@ func main() {
 }
 
 func entry() {
-	systray.SetTitle("Hub Me")
+	// systray.SetTitle("Hub Me")
 	systray.SetTooltip("GitHub Integration")
+	systray.SetIcon(icons.Data)
 	mNewRepo := systray.AddMenuItem("New Repo", "Open browser to create new repo")
 	mQuit := systray.AddMenuItem("Quit", "Exit the application")
 	mNewRepo.Show()
@@ -23,5 +27,5 @@ func entry() {
 }
 
 func exit() {
-	panic("something broke")
+	fmt.Println("program exited")
 }
