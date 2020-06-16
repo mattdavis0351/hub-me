@@ -32,8 +32,6 @@ func entry() {
 	utils.PopulateMentionedList(issuesMentioned)
 	issuesCreated := issues.AddSubMenuItem("Created Issues", "View issues that you created")
 	utils.PopulateMentionedList(issuesCreated)
-	// issuesSubscribed := issues.AddSubMenuItem("Subscribed Issues", "View issues that you've subscribed to")
-	// utils.PopulateSubscribedList(issuesSubscribed)
 
 	systray.AddSeparator()
 
