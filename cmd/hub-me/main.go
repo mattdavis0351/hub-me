@@ -26,22 +26,34 @@ func entry() {
 	systray.AddSeparator()
 
 	issues := systray.AddMenuItem("GitHub Issues", "This is a list of issues that could use a better tooltip")
+
 	issuesAssigned := issues.AddSubMenuItem("Assigned Issues", "View a list of assigned issues")
-	utils.PopulateAssignedList(issuesAssigned)
+	utils.AddGitHubItems(issuesAssigned, "issue", "assigned")
+
 	issuesMentioned := issues.AddSubMenuItem("Mentioned Issues", "View issues where you were mentioned")
-	utils.PopulateMentionedList(issuesMentioned)
+	utils.AddGitHubItems(issuesMentioned, "issue", "mentioned")
+
 	issuesCreated := issues.AddSubMenuItem("Created Issues", "View issues that you created")
-	utils.PopulateMentionedList(issuesCreated)
+	utils.AddGitHubItems(issuesCreated, "issue", "created")
+
+	pulls := systray.AddMenuItem("GitHub Pull Requests", "This is a list of PRs that could use a better tooltip")
+
+	pullsAssigned := pulls.AddSubMenuItem("Assigned Pull Requests", "View a list of assigned pulls")
+	utils.AddGitHubItems(pullsAssigned, "pulls", "assigned")
+
+	pullsMentioned := pulls.AddSubMenuItem("Mention Pull Requests", "")
+	utils.AddGitHubItems(pullsMentioned, "pulls", "mentioned")
+
+	pullsCreated := pulls.AddSubMenuItem("Creatd Pull Requests", "")
+	utils.AddGitHubItems(pullsCreated, "pulls", "created")
+
+	// TODO... implement review requested
+	// pullReviewRequested := pulls.AddSubMenuItem("Review Requested", "")
+	// utils.AddGitHubItems(pullReviewRequested, "pulls", "subcribed")
 
 	systray.AddSeparator()
 
 	mQuit := systray.AddMenuItem("Quit", "Exit the application")
-
-	// Show all menu options
-	mNewRepo.Show()
-	issuesAssigned.Show()
-	issuesMentioned.Show()
-	mQuit.Show()
 
 	// Add click listeners to desired options
 	go items.AppQuit(mQuit)
