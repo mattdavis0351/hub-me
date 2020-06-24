@@ -2,9 +2,11 @@ package main
 
 import (
 	"fmt"
-	"os"
+	"log"
+	"net/http"
 
 	"github.com/getlantern/systray"
+	"github.com/mattdavis0351/hub-me/auth"
 	"github.com/mattdavis0351/hub-me/icons"
 	"github.com/mattdavis0351/hub-me/items"
 	"github.com/mattdavis0351/hub-me/repository"
@@ -12,16 +14,32 @@ import (
 )
 
 func main() {
-	fmt.Println(os.Getenv("HUB_ME_TOKEN"))
+
 	systray.Run(entry, exit)
 }
 
 func entry() {
+	fmt.Println("systray is trash, this is the entrypoint")
 	// systray.SetTitle("Hub Me")
 	systray.SetTooltip("GitHub Integration")
 	systray.SetIcon(icons.Data)
 
-	// Layout potential options
+	for auth.UserLogin != true {
+		fmt.Println("user login is not true...")
+		mLogin := systray.AddMenuItem("Login", "")
+		systray.AddSeparator()
+		mQuit := systray.AddMenuItem("Quit", "Exit the application")
+		go items.AppQuit(mQuit)
+		go items.AppLogin(mLogin)
+
+		http.HandleFunc("/login", auth.HandleGitHubLogin)
+		http.HandleFunc("/login/cb", auth.HandleGitHubCallback)
+
+		log.Fatal(http.ListenAndServe(":3000", nil))
+
+		fmt.Println("while user login is not true....")
+	}
+	fmt.Println("user has logged in, you should see the new menu")
 	mNewRepo := systray.AddMenuItem("New Repo", "Open browser to create new repo")
 	systray.AddSeparator()
 
@@ -53,11 +71,12 @@ func entry() {
 
 	systray.AddSeparator()
 
-	mQuit := systray.AddMenuItem("Quit", "Exit the application")
-
 	// Add click listeners to desired options
-	go items.AppQuit(mQuit)
+
 	go repository.NewRepo(mNewRepo)
+
+	mQuit := systray.AddMenuItem("Quit", "Exit the application")
+	go items.AppQuit(mQuit)
 
 }
 
